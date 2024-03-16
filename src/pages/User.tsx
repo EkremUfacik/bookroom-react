@@ -1,4 +1,5 @@
 import DateSection from "@/components/DateSection";
+import Loading from "@/components/Loading";
 import LogoutButton from "@/components/LogoutButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -129,7 +130,7 @@ const User = () => {
       <div>
         <h1 className="text-xl font-semibold">Rooms Lists</h1>
         <div className="my-4 flex flex-wrap justify-center items-center gap-6">
-          {isPending && <p className="text-slate-800 ">Loading...</p>}
+          {isPending && <Loading />}
           {isError && (
             <p className="text-red-600 font-semibold">Error: {error.message}</p>
           )}

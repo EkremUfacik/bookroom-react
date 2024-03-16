@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/services/fetcher";
+import Loading from "./Loading";
 
 type UpdateRoomModalProps = {
   id: number;
@@ -24,7 +25,7 @@ export function UpdateRoomModal({ id, children }: UpdateRoomModalProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data, refetch } = useQuery({
+  const { data, refetch, isPending } = useQuery({
     queryKey: ["room", id],
     queryFn: () => fetcher(`/room/${id}`),
     enabled: open,
@@ -59,36 +60,40 @@ export function UpdateRoomModal({ id, children }: UpdateRoomModalProps) {
         <DialogHeader>
           <DialogTitle>Create Room</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleUpdate}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="roomname" className="text-right">
-                Name
-              </Label>
-              <Input
-                id="roomname"
-                name="roomname"
-                defaultValue={data?.name}
-                className="col-span-3"
-              />
+        {isPending ? (
+          <Loading />
+        ) : (
+          <form onSubmit={handleUpdate}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="roomname" className="text-right">
+                  Name
+                </Label>
+                <Input
+                  id="roomname"
+                  name="roomname"
+                  defaultValue={data?.name}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="capacity" className="text-right">
+                  Capacity
+                </Label>
+                <Input
+                  id="capacity"
+                  type="number"
+                  name="capacity"
+                  defaultValue={data?.max_occupancy}
+                  className="col-span-3"
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="capacity" className="text-right">
-                Capacity
-              </Label>
-              <Input
-                id="capacity"
-                type="number"
-                name="capacity"
-                defaultValue={data?.max_occupancy}
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit">Update</Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button type="submit">Update</Button>
+            </DialogFooter>
+          </form>
+        )}
       </DialogContent>
     </Dialog>
   );

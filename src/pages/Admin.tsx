@@ -1,4 +1,5 @@
 import { CreateRoomModal } from "@/components/CreateRoomModal";
+import Loading from "@/components/Loading";
 import LogoutButton from "@/components/LogoutButton";
 import { UpdateRoomModal } from "@/components/UpdateRoomModal";
 import { Button } from "@/components/ui/button";
@@ -43,7 +44,7 @@ const Admin = () => {
       <div>
         <h1 className="text-xl font-semibold">Rooms Lists</h1>
         <div className="my-4 flex flex-wrap justify-center items-center gap-6">
-          {isPending && <p className="text-slate-800 ">Loading...</p>}
+          {isPending && <Loading />}
           {isError && (
             <p className="text-red-600 font-semibold">Error: {error.message}</p>
           )}
